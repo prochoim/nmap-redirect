@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>네이버 지도로 이동</title>
+  <style>body{font-family:-apple-system,sans-serif;padding:24px;text-align:center;color:#555}</style>
+</head>
+<body>
+  <p>네이버 지도 앱으로 이동 중...</p>
+  <p><small>앱이 자동으로 열리지 않으면 네이버 지도 앱이 설치되어 있는지 확인하세요.</small></p>
+  <script>
+  (function(){
+    var p = new URLSearchParams(window.location.search);
+    var dlat = p.get('dlat');
+    var dlng = p.get('dlng');
+    var dname = p.get('dname') || '';
+    var slat = '37.6492';
+    var slng = '127.0522';
+    var sname = '집';
+    var url;
+    if (dlat && dlng) {
+      url = 'nmap://route/public?slat=' + slat + '&slng=' + slng
+          + '&sname=' + encodeURIComponent(sname)
+          + '&dlat=' + dlat + '&dlng=' + dlng
+          + '&dname=' + encodeURIComponent(dname)
+          + '&appname=com.calendar.intake';
+    } else {
+      url = 'nmap://search?query=' + encodeURIComponent(dname)
+          + '&appname=com.calendar.intake';
+    }
+    window.location.replace(url);
+  })();
+  </script>
+</body>
+</html>
