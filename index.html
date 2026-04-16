@@ -7,27 +7,34 @@
   <style>body{font-family:-apple-system,sans-serif;padding:24px;text-align:center;color:#555}</style>
 </head>
 <body>
-  <p>네이버 지도 앱으로 이동 중...</p>
-  <p><small>앱이 자동으로 열리지 않으면 네이버 지도 앱이 설치되어 있는지 확인하세요.</small></p>
+  <p>네이버 지도로 이동 중...</p>
+  <p><small>모바일: 지도 앱 자동 실행 / 데스크톱: 웹에서 도착지 검색</small></p>
   <script>
   (function(){
     var p = new URLSearchParams(window.location.search);
     var dlat = p.get('dlat');
     var dlng = p.get('dlng');
     var dname = p.get('dname') || '';
+    // 출발지 = 사용자 집 좌표 (정확 좌표로 교체 예정)
     var slat = '37.6492';
     var slng = '127.0522';
     var sname = '집';
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     var url;
-    if (dlat && dlng) {
-      url = 'nmap://route/public?slat=' + slat + '&slng=' + slng
-          + '&sname=' + encodeURIComponent(sname)
-          + '&dlat=' + dlat + '&dlng=' + dlng
-          + '&dname=' + encodeURIComponent(dname)
-          + '&appname=com.calendar.intake';
+    if (isMobile) {
+      if (dlat && dlng) {
+        url = 'nmap://route/public?slat=' + slat + '&slng=' + slng
+            + '&sname=' + encodeURIComponent(sname)
+            + '&dlat=' + dlat + '&dlng=' + dlng
+            + '&dname=' + encodeURIComponent(dname)
+            + '&appname=com.calendar.intake';
+      } else {
+        url = 'nmap://search?query=' + encodeURIComponent(dname)
+            + '&appname=com.calendar.intake';
+      }
     } else {
-      url = 'nmap://search?query=' + encodeURIComponent(dname)
-          + '&appname=com.calendar.intake';
+      // 데스크톱 fallback: 네이버 지도 웹에서 도착지 검색 페이지
+      url = 'https://map.naver.com/p/search/' + encodeURIComponent(dname);
     }
     window.location.replace(url);
   })();
