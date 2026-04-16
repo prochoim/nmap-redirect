@@ -8,20 +8,32 @@
 </head>
 <body>
   <p>네이버 지도로 이동 중...</p>
-  <p><small>모바일: 지도 앱 자동 실행 / 데스크톱: 웹에서 도착지 검색</small></p>
+  <p><small>모바일: 지도 앱 자동 실행 / 데스크톱: 길찾기 또는 검색 페이지</small></p>
   <script>
   (function(){
     var p = new URLSearchParams(window.location.search);
     var dlat = p.get('dlat');
     var dlng = p.get('dlng');
     var dname = p.get('dname') || '';
-    // 출발지 = 창동주공18단지 버스정류장 (단지 정문 노해로70길, OSM 검증)
+    var mode = p.get('mode');
+    // 출발지 = 창동주공18단지 정문 정류장 (OSM 검증)
     var slat = '37.6470';
     var slng = '127.0530';
     var sname = '집';
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     var url;
-    if (isMobile) {
+    if (mode === 'desktop') {
+      // 데스크톱 길찾기 직접 시도 (작동 가변)
+      if (dlat && dlng) {
+        url = 'https://map.naver.com/p/?menu=route&pathType=2'
+            + '&sname=' + encodeURIComponent(sname)
+            + '&sx=' + slng + '&sy=' + slat
+            + '&ename=' + encodeURIComponent(dname)
+            + '&ex=' + dlng + '&ey=' + dlat;
+      } else {
+        url = 'https://map.naver.com/p/search/' + encodeURIComponent(dname);
+      }
+    } else if (isMobile) {
       if (dlat && dlng) {
         url = 'nmap://route/public?slat=' + slat + '&slng=' + slng
             + '&sname=' + encodeURIComponent(sname)
