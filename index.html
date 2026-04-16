@@ -23,18 +23,18 @@
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     var url;
     if (mode === 'desktop') {
-      // 데스크톱(맥북)용: 카카오맵 대중교통 길찾기 (https + 1탭 + 검증됨)
+      // 데스크톱(맥북)용: 카카오맵 공식 link API (path 기반, 검증된 형식)
+      // 형식: /link/by/traffic/{출발지명},{lat},{lng}/{도착지명},{lat},{lng}
       if (dlat && dlng) {
-        url = 'https://map.kakao.com/?sX=' + slng + '&sY=' + slat
-            + '&sName=' + encodeURIComponent(sname)
-            + '&eX=' + dlng + '&eY=' + dlat
-            + '&eName=' + encodeURIComponent(dname)
-            + '&target=traffic';
+        url = 'https://map.kakao.com/link/by/traffic/'
+            + encodeURIComponent(sname) + ',' + slat + ',' + slng
+            + '/'
+            + encodeURIComponent(dname) + ',' + dlat + ',' + dlng;
       } else {
-        url = 'https://map.kakao.com/?q=' + encodeURIComponent(dname);
+        url = 'https://map.kakao.com/link/search/' + encodeURIComponent(dname);
       }
     } else if (isMobile) {
-      // 모바일: nmap:// 스킴 (검증됨, 절대 안 건드림)
+      // 모바일: nmap:// 스킴 (검증됨)
       if (dlat && dlng) {
         url = 'nmap://route/public?slat=' + slat + '&slng=' + slng
             + '&sname=' + encodeURIComponent(sname)
