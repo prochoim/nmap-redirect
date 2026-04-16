@@ -15,9 +15,9 @@
     var dlat = p.get('dlat');
     var dlng = p.get('dlng');
     var dname = p.get('dname') || '';
-    // 출발지 = 사용자 집 좌표 (정확 좌표로 교체 예정)
-    var slat = '37.6492';
-    var slng = '127.0522';
+    // 출발지 = 사용자 집 좌표 (창동주공18단지 1802동, 구글맵 iframe 검증)
+    var slat = '37.64711';
+    var slng = '127.05265';
     var sname = '집';
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     var url;
@@ -33,7 +33,6 @@
             + '&appname=com.calendar.intake';
       }
     } else {
-      // 데스크톱 fallback: 네이버 지도 웹에서 도착지 검색 페이지
       url = 'https://map.naver.com/p/search/' + encodeURIComponent(dname);
     }
     window.location.replace(url);
